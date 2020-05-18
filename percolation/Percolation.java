@@ -15,10 +15,10 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
 
     private WeightedQuickUnionUF quickFindUF;
-    private static int N = 0;
     private boolean[] openSites;
     private static int[] blockedSites;
     private static int squareN;
+    public static double threshold = 0.0;
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
@@ -73,6 +73,7 @@ public class Percolation {
         }
     }
 
+    // delete one element from a array
     private int[] delete(int index, int array[]) {
         //数组的删除其实就是覆盖前一位
         int[] arrNew = new int[array.length - 1];
@@ -101,8 +102,8 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        for (int i=0; i < N; i++) {
-            for (int j = N*N-N; j < N*N; j++) {
+        for (int i=0; i < squareN; i++) {
+            for (int j = squareN*squareN-squareN; j < squareN*squareN; j++) {
                 if (quickFindUF.find(i) ==  quickFindUF.find(j)) {
                     return true;
                 }
@@ -114,12 +115,12 @@ public class Percolation {
 
     // test client (optional)
     public static void main(String[] args) {
-        System.out.println("Percolation.main()");
+        //System.out.println("Percolation.main()");
 
-        N = 10;  //  StdIn.readInt();
+        //squareN = 10;  //  StdIn.readInt();
         int count = 0;
         // Initialize all sites to be blocked.
-        Percolation percolation = new Percolation(N);
+        Percolation percolation = new Percolation(squareN);
 
         // int p = (int) (StdRandom.uniform(0, N));
         // int q = (int) (StdRandom.uniform(0,  N));
@@ -138,10 +139,19 @@ public class Percolation {
                 if (!percolation.isOpen(p, q)) {
                     percolation.open(p, q);
                     count++;
-                    StdOut.println("open " + p + " " + q + ", count = " + percolation.quickFindUF.count());
+                    //StdOut.println("open " + p + " " + q + ", count = " + percolation.quickFindUF.count());
                 }
         }
-        StdOut.println("count = " + count);
-        StdOut.println("threshold =" + (double)count/(N*N));
+        //StdOut.println("count = " + count);
+        threshold =  (double)count/(squareN*squareN);
+        StdOut.println("threshold =" + threshold);
+    }
+
+    /**
+     * getThreshold
+     * @return
+     */
+    public double getThreshold() {
+        return threshold;
     }
 }
